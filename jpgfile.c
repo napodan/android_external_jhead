@@ -22,7 +22,7 @@ static int HaveAll;
 #undef SUPERDEBUG
 
 #ifdef SUPERDEBUG
-#define printf LOGE
+#define printf ALOGE
 #endif
 
 
@@ -163,7 +163,7 @@ int ReadJpegSections (FILE * infile, ReadMode_t ReadMode)
 
         if (itemlen < 2){
 //            ErrFatal("invalid marker");
-			LOGE("invalid marker");
+			ALOGE("invalid marker");
 	        return FALSE;
         }
 
@@ -172,7 +172,7 @@ int ReadJpegSections (FILE * infile, ReadMode_t ReadMode)
         Data = (uchar *)malloc(itemlen);
         if (Data == NULL){
 	    // ErrFatal("Could not allocate memory");
-	    LOGE("Could not allocate memory");
+	    ALOGE("Could not allocate memory");
 	    return 0;
         }
         Sections[SectionsRead].Data = Data;
@@ -184,7 +184,7 @@ int ReadJpegSections (FILE * infile, ReadMode_t ReadMode)
         got = fread(Data+2, 1, itemlen-2, infile); // Read the whole section.
         if (got != itemlen-2){
 //            ErrFatal("Premature end of file?");
-		   LOGE("Premature end of file?");
+		   ALOGE("Premature end of file?");
 	      return FALSE;
         }
         SectionsRead += 1;
@@ -206,14 +206,14 @@ int ReadJpegSections (FILE * infile, ReadMode_t ReadMode)
                     Data = (uchar *)malloc(size);
                     if (Data == NULL){
 		            // ErrFatal("could not allocate data for entire image");
-		            LOGE("could not allocate data for entire image");
+		            ALOGE("could not allocate data for entire image");
     		        return FALSE;
                     }
 
                     got = fread(Data, 1, size, infile);
                     if (got != size){
 			        // ErrFatal("could not read the rest of the image");
-			        LOGE("could not read the rest of the image");
+			        ALOGE("could not read the rest of the image");
 				    return FALSE;
                     }
 
@@ -334,7 +334,7 @@ int ReadJpegFile(const char * FileName, ReadMode_t ReadMode)
     infile = fopen(FileName, "rb"); // Unix ignores 'b', windows needs it.
 
     if (infile == NULL) {
-        LOGE("can't open '%s'", FileName);
+        ALOGE("can't open '%s'", FileName);
         fprintf(stderr, "can't open '%s'\n", FileName);
         return FALSE;
     }
@@ -343,7 +343,7 @@ int ReadJpegFile(const char * FileName, ReadMode_t ReadMode)
     printf("ReadJpegSections");
     ret = ReadJpegSections(infile, ReadMode);
     if (!ret){
-        LOGE("Not JPEG: %s", FileName);
+        ALOGE("Not JPEG: %s", FileName);
         fprintf(stderr,"Not JPEG: %s\n",FileName);
     }
 
@@ -387,7 +387,7 @@ int SaveThumbnail(char * ThumbFileName)
         return TRUE;
     }else{
         // ErrFatal("Could not write thumbnail file");
-        LOGE("Could not write thumbnail file");
+        ALOGE("Could not write thumbnail file");
         return FALSE;
     }
 }
@@ -413,7 +413,7 @@ int ReplaceThumbnail(const char * ThumbFileName)
         // of the exif header, which is risky, and jhad doesn't know how to do.
         fprintf(stderr,"Image contains no thumbnail to replace - add is not possible\n");
 #ifdef SUPERDEBUG
-        LOGE("Image contains no thumbnail to replace - add is not possible\n");
+        ALOGE("Image contains no thumbnail to replace - add is not possible\n");
 #endif
         return FALSE;
     }
@@ -423,7 +423,7 @@ int ReplaceThumbnail(const char * ThumbFileName)
 
         if (ThumbnailFile == NULL){
 	        //ErrFatal("Could not read thumbnail file");
-	        LOGE("Could not read thumbnail file");
+	        ALOGE("Could not read thumbnail file");
             return FALSE;
         }
 
@@ -435,7 +435,7 @@ int ReplaceThumbnail(const char * ThumbFileName)
 
         if (ThumbLen + ImageInfo.ThumbnailOffset > 0x10000-20){
 	        //ErrFatal("Thumbnail is too large to insert into exif header");
-	        LOGE("Thumbnail is too large to insert into exif header");
+	        ALOGE("Thumbnail is too large to insert into exif header");
 	        return FALSE;
         }
     }else{
@@ -468,7 +468,7 @@ int ReplaceThumbnail(const char * ThumbFileName)
     ExifSection->Size = NewExifSize;
 
 #ifdef SUPERDEBUG
-        LOGE("ReplaceThumbnail successful thumblen %d", ThumbLen);
+        ALOGE("ReplaceThumbnail successful thumblen %d", ThumbLen);
 #endif
     return TRUE;
 }
@@ -532,13 +532,13 @@ int WriteJpegFile(const char * FileName)
     int a;
 
     if (!HaveAll){
-        LOGE("Can't write back - didn't read all");
+        ALOGE("Can't write back - didn't read all");
         return FALSE;
     }
 
     outfile = fopen(FileName,"wb");
     if (outfile == NULL){
-        LOGE("Could not open file for write");
+        ALOGE("Could not open file for write");
         return FALSE;
     }
 
@@ -565,7 +565,7 @@ int WriteJpegFile(const char * FileName)
 	nWrite = fwrite(Sections[a].Data, 1, Sections[a].Size, outfile);
         writeOk = (nWrite == Sections[a].Size);
         if(!writeOk){
-            LOGE("write section %d failed expect %d actual %d",a,Sections[a].Size,nWrite);
+            ALOGE("write section %d failed expect %d actual %d",a,Sections[a].Size,nWrite);
             break;
         }
     }
@@ -575,7 +575,7 @@ int WriteJpegFile(const char * FileName)
         nWrite = fwrite(Sections[a].Data, 1,Sections[a].Size, outfile);
 	writeOk = (nWrite == Sections[a].Size);
         if (!writeOk){
-            LOGE("write section %d failed expect %d actual %d",a,Sections[a].Size,nWrite);
+            ALOGE("write section %d failed expect %d actual %d",a,Sections[a].Size,nWrite);
         }
     }
        
@@ -685,7 +685,7 @@ Section_t * CreateSection(int SectionType, unsigned char * Data, int Size)
 
     if (SectionsRead < NewIndex){
         // ErrFatal("Too few sections!");
-        LOGE("Too few sections!");
+        ALOGE("Too few sections!");
         return FALSE;
     }
 

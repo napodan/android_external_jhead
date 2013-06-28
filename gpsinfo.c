@@ -62,7 +62,7 @@ static const char ExifAsciiPrefix[] = { 0x41, 0x53, 0x43, 0x49, 0x49, 0x0, 0x0, 
 #undef SUPERDEBUG
 
 #ifdef SUPERDEBUG
-#define printf LOGE
+#define printf ALOGE
 #endif
 
 
@@ -280,7 +280,7 @@ void ProcessGpsInfo(unsigned char * DirStart, int ByteCountUnused, unsigned char
                         (char*)(ValuePtr + EXIF_ASCII_PREFIX_LEN), length);
                     ImageInfo.GpsProcessingMethod[length] = 0;
                 } else {
-                    LOGW("Unsupported encoding for GPSProcessingMethod");
+                    ALOGW("Unsupported encoding for GPSProcessingMethod");
                 }
                 break;
         }

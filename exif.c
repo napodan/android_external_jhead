@@ -28,7 +28,7 @@ int NumOrientations = 0;
 #undef SUPERDEBUG
 
 #ifdef SUPERDEBUG
-#define printf LOGE
+#define printf ALOGE
 #endif
 
 //--------------------------------------------------------------------------
@@ -1180,7 +1180,7 @@ void create_EXIF(ExifElement_t* elements, int exifTagCount, int gpsTagCount)
     int DirContinuation = 0;
 
 #ifdef SUPERDEBUG
-    LOGE("create_EXIF %d exif elements, %d gps elements", exifTagCount, gpsTagCount);
+    ALOGE("create_EXIF %d exif elements, %d gps elements", exifTagCount, gpsTagCount);
 #endif
     
     MotorolaOrder = 0;
@@ -1236,7 +1236,7 @@ void create_EXIF(ExifElement_t* elements, int exifTagCount, int gpsTagCount)
                     continue;
                 }
 #ifdef SUPERDEBUG
-                LOGE("create_EXIF saving tag %x value \"%s\"",elements[i].Tag, elements[i].Value);
+                ALOGE("create_EXIF saving tag %x value \"%s\"",elements[i].Tag, elements[i].Value);
 #endif
                 writeExifTagAndData(elements[i].Tag,
                                     entry->Format,
@@ -1302,7 +1302,7 @@ void create_EXIF(ExifElement_t* elements, int exifTagCount, int gpsTagCount)
                     continue;
                 }
 #ifdef SUPERDEBUG
-                LOGE("create_EXIF saving GPS tag %x value \"%s\"",elements[i].Tag, elements[i].Value);
+                ALOGE("create_EXIF saving GPS tag %x value \"%s\"",elements[i].Tag, elements[i].Value);
 #endif
                 writeExifTagAndData(elements[i].Tag,
                                     entry->Format,
